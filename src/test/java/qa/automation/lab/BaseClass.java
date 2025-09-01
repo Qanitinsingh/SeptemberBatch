@@ -11,7 +11,7 @@ public class BaseClass {
 
     @Parameters("browser")
     @BeforeClass
-    public void setUp(@Optional("chrome") String browser) {
+    public void setUp(@Optional("Chrome") String browser) {
         switch (browser.toLowerCase()) {
             case "firefox":
                 driver = new FirefoxDriver();
