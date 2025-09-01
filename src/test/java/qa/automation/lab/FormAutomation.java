@@ -40,7 +40,7 @@ public class FormAutomation extends BaseClass {
             logger.info("Navigated to Form page.");
             Thread.sleep(2000);
         } catch (Exception e) {
-            logger.error("Exception while loading form page: {}", e.getMessage(), e);
+            logger.error("Exception while loading form Page: {}", e.getMessage(), e);
         }
     }
 
