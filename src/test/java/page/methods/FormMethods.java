@@ -32,6 +32,7 @@ public class FormMethods {
     // Fill the form with Map of data
     public static void fillForm(WebDriver driver, Map<String, String> data) {
         try {
+
             driver.findElement(FIRST_NAME_LOCATOR).sendKeys(data.get("firstName"));
             logger.info("Entered First Name: {}", data.get("firstName"));
 

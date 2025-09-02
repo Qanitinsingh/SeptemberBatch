@@ -1,5 +1,6 @@
 package steps;
 
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -23,20 +24,19 @@ public class FormSteps {
     }
 
     @When("I fill the form with following details")
-    public void fillForm(Map<String, String> data) {
-        // Call method from FormMethods class and pass data map
-        // formMethods.fillForm(data);
+    public void fillForm(DataTable dataTable) {
+        Map<String, String> data = dataTable.asMaps(String.class, String.class).get(0);
+
+        FormMethods.fillForm(driver, data);
     }
 
     @And("I submit the form")
     public void submitForm() {
-        // Call method from FormMethods class
-        // formMethods.submitForm();
+        FormMethods.submitForm(driver);
     }
 
     @Then("I should see the form submitted successfully")
     public void verifySubmission() {
-        // Call method from FormMethods class
-        // formMethods.verifySubmission();
+        FormMethods.verifySubmission(driver);
     }
 }
