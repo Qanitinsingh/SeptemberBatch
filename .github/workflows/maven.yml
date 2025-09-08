@@ -27,23 +27,24 @@ jobs:
         id: timestamp
         run: echo "TIMESTAMP=$(date +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_ENV
 
-      # Build project and run tests with timestamp property
+      # Build project and run tests with timestamp
       - name: Build and run tests
-        run: mvn clean test package -Drun.timestamp=$TIMESTAMP
+        run: |
+          echo "Run timestamp: $TIMESTAMP"
+          mvn clean test package -Drun.timestamp=$TIMESTAMP
 
       # Debug: List project directory to see ExtentReports
       - name: List project directory
         run: ls -R
 
-      # Zip the ExtentReports folder if it exists
+      # Zip the ExtentReports folder with timestamp
       - name: Zip Extent Report
         id: zip_report
         run: |
           echo "Checking if ExtentReports folder exists..."
-          ls -R
           if [ -d "ExtentReports" ]; then
             echo "Report folder found, zipping..."
-            zip -r extent-report.zip ExtentReports
+            zip -r extent-report-$TIMESTAMP.zip ExtentReports
           else
             echo "Report folder not found, skipping zip."
             exit 1
@@ -54,8 +55,8 @@ jobs:
         if: steps.zip_report.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
-          name: extent-report
-          path: extent-report.zip
+          name: extent-report-$TIMESTAMP
+          path: extent-report-$TIMESTAMP.zip
 
       # Send the zipped report via Gmail
       - name: Send Extent Report via Gmail
@@ -66,7 +67,7 @@ jobs:
           server_port: 587
           username: ${{ secrets.GMAIL_USER }}
           password: ${{ secrets.GMAIL_PASS }}
-          subject: "Extent Report - GitHub Actions Run"
+          subject: "Extent Report - GitHub Actions Run ($TIMESTAMP)"
           to: palindromenitinchauhan@gmail.com
           from: ${{ secrets.GMAIL_USER }}
           body: |
@@ -76,4 +77,4 @@ jobs:
 
             Regards,
             Nitin Chauhan
-          attachments: extent-report.zip
+          attachments: extent-report-$TIMESTAMP.zip
