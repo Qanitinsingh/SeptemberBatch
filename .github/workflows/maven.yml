@@ -26,19 +26,29 @@ jobs:
       - name: Build with Maven
         run: mvn -B clean package --file pom.xml
 
-      # Zip the report folder
+      # List target directory (for debugging)
+      - name: List target directory
+        run: ls -R target
+
+      # Zip the report folder if it exists
       - name: Zip Extent Report
-        run: zip -r extent-report.zip target/chaintest
+        run: |
+          if [ -d "target/chaintest" ]; then
+            zip -r extent-report.zip target/chaintest
+          else
+            echo "Report folder not found!"
+          fi
 
       # Upload Extent Report as an artifact
       - name: Upload Extent Report
         uses: actions/upload-artifact@v4
         with:
-          name: ChainTest-report
-          path: ChainTest-report.zip
+          name: extent-report
+          path: extent-report.zip
 
       # Send Extent Report via Gmail
       - name: Send Extent Report via Gmail
+        if: success() && steps.Zip_Extent_Report.outcome == 'success'
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
