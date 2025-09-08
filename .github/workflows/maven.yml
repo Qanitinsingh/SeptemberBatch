@@ -27,11 +27,9 @@ jobs:
         id: timestamp
         run: echo "TIMESTAMP=$(date +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_ENV
 
-      # Build project and run tests with timestamp
+      # Build project and run tests
       - name: Build and run tests
-        run: |
-          echo "Run timestamp: $TIMESTAMP"
-          mvn clean test package -Drun.timestamp=$TIMESTAMP
+        run: mvn clean test package
 
       # Debug: List project directory to see ExtentReports
       - name: List project directory
@@ -44,7 +42,9 @@ jobs:
           echo "Checking if ExtentReports folder exists..."
           if [ -d "ExtentReports" ]; then
             echo "Report folder found, zipping..."
-            zip -r extent-report-$TIMESTAMP.zip ExtentReports
+            zip_file="extent-report-$TIMESTAMP.zip"
+            zip -r "$zip_file" ExtentReports
+            echo "ZIP_FILE=$zip_file" >> $GITHUB_ENV
           else
             echo "Report folder not found, skipping zip."
             exit 1
@@ -55,8 +55,8 @@ jobs:
         if: steps.zip_report.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
-          name: extent-report-$TIMESTAMP
-          path: extent-report-$TIMESTAMP.zip
+          name: extent-report
+          path: ${{ env.ZIP_FILE }}
 
       # Send the zipped report via Gmail
       - name: Send Extent Report via Gmail
@@ -67,7 +67,7 @@ jobs:
           server_port: 587
           username: ${{ secrets.GMAIL_USER }}
           password: ${{ secrets.GMAIL_PASS }}
-          subject: "Extent Report - GitHub Actions Run ($TIMESTAMP)"
+          subject: "Extent Report - GitHub Actions Run (${{ env.TIMESTAMP }})"
           to: palindromenitinchauhan@gmail.com
           from: ${{ secrets.GMAIL_USER }}
           body: |
@@ -77,4 +77,4 @@ jobs:
 
             Regards,
             Nitin Chauhan
-          attachments: extent-report-$TIMESTAMP.zip
+          attachments: ${{ env.ZIP_FILE }}
