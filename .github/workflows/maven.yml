@@ -11,8 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout source code
       - uses: actions/checkout@v4
 
+      # Set up JDK 17
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -20,5 +22,26 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      # Build with Maven
       - name: Build with Maven
         run: mvn -B clean package --file pom.xml
+
+      # Send Extent Report via Gmail
+      - name: Send Extent Report via Gmail
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.GMAIL_USER }}
+          password: ${{ secrets.GMAIL_PASS }}
+          subject: "Extent Report - GitHub Actions Run"
+          to: palindromenitinchauhan@gmail.com   # 👉 replace with your demo recipient
+          from: ${{ secrets.GMAIL_USER }}
+          body: |
+            Hi,
+
+            Please find the Extent Report from the latest CI run attached.
+
+            Regards,
+            Nitin Chauhan
+          attachments: target/chaintest/index.html
