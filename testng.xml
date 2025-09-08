@@ -4,7 +4,7 @@
     <parameter name="browser" value="chrome"/>
     <test name="SampleTests">
         <classes>
-            <class name="qa.automation.lab.MyTest"/>
+            <class name="runner.ExecutionManager"/>
             <!-- Add more test classes here -->
         </classes>
     </test>
