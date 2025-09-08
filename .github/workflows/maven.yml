@@ -32,15 +32,21 @@ jobs:
 
       # Zip the report folder if it exists
       - name: Zip Extent Report
+        id: zip_report
         run: |
+          echo "Checking if report folder exists..."
+          ls -R target
           if [ -d "target/chaintest" ]; then
+            echo "Report folder found, zipping..."
             zip -r extent-report.zip target/chaintest
           else
-            echo "Report folder not found!"
+            echo "Report folder not found, skipping zip."
+            exit 1
           fi
 
       # Upload Extent Report as an artifact
       - name: Upload Extent Report
+        if: steps.zip_report.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: extent-report
@@ -48,7 +54,7 @@ jobs:
 
       # Send Extent Report via Gmail
       - name: Send Extent Report via Gmail
-        if: success() && steps.Zip_Extent_Report.outcome == 'success'
+        if: steps.zip_report.outcome == 'success'
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
