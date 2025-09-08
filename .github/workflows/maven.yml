@@ -26,12 +26,16 @@ jobs:
       - name: Build with Maven
         run: mvn -B clean package --file pom.xml
 
+      # Zip the report folder
+      - name: Zip Extent Report
+        run: zip -r extent-report.zip target/chaintest
+
       # Upload Extent Report as an artifact
       - name: Upload Extent Report
         uses: actions/upload-artifact@v4
         with:
-          name: extent-report
-          path: target/chaintest/index.html
+          name: ChainTest-report
+          path: ChainTest-report.zip
 
       # Send Extent Report via Gmail
       - name: Send Extent Report via Gmail
@@ -51,4 +55,4 @@ jobs:
 
             Regards,
             Nitin Chauhan
-          attachments: target/chaintest/index.html
+          attachments: extent-report.zip
