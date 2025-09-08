@@ -22,15 +22,20 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      # Build project and run tests to generate ChainTest report
+      # Get timestamp for unique report
+      - name: Set timestamp
+        id: timestamp
+        run: echo "TIMESTAMP=$(date +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_ENV
+
+      # Build project and run tests with timestamp property
       - name: Build and run tests
-        run: mvn clean test package
+        run: mvn clean test package -Drun.timestamp=$TIMESTAMP
 
       # Debug: List project directory to see ExtentReports
       - name: List project directory
         run: ls -R
 
-      # Zip the report folder if it exists
+      # Zip the ExtentReports folder if it exists
       - name: Zip Extent Report
         id: zip_report
         run: |
