@@ -26,23 +26,19 @@ jobs:
       - name: Build and run tests
         run: mvn clean test package
 
-      # Debug: List target directory
-      - name: List target directory
-        run: ls -R target
-
-      # Ensure target/chaintest folder exists
-      - name: Ensure report folder exists
-        run: mkdir -p target/chaintest
+      # Debug: List project directory to see ExtentReports
+      - name: List project directory
+        run: ls -R
 
       # Zip the report folder if it exists
       - name: Zip Extent Report
         id: zip_report
         run: |
-          echo "Checking if report folder exists..."
-          ls -R target
-          if [ -d "target/chaintest" ]; then
+          echo "Checking if ExtentReports folder exists..."
+          ls -R
+          if [ -d "ExtentReports" ]; then
             echo "Report folder found, zipping..."
-            zip -r extent-report.zip target/chaintest
+            zip -r extent-report.zip ExtentReports
           else
             echo "Report folder not found, skipping zip."
             exit 1
