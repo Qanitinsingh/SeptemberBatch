@@ -26,6 +26,13 @@ jobs:
       - name: Build with Maven
         run: mvn -B clean package --file pom.xml
 
+      # Upload Extent Report as an artifact
+      - name: Upload Extent Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: extent-report
+          path: target/chaintest/index.html
+
       # Send Extent Report via Gmail
       - name: Send Extent Report via Gmail
         uses: dawidd6/action-send-mail@v3
@@ -35,7 +42,7 @@ jobs:
           username: ${{ secrets.GMAIL_USER }}
           password: ${{ secrets.GMAIL_PASS }}
           subject: "Extent Report - GitHub Actions Run"
-          to: palindromenitinchauhan@gmail.com   # 👉 replace with your demo recipient
+          to: palindromenitinchauhan@gmail.com
           from: ${{ secrets.GMAIL_USER }}
           body: |
             Hi,
