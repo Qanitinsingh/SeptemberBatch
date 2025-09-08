@@ -22,11 +22,11 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      # Build with Maven
-      - name: Build with Maven
-        run: mvn -B clean package --file pom.xml
+      # Build project and run tests to generate ChainTest report
+      - name: Build and run tests
+        run: mvn clean test package
 
-      # List target directory (for debugging)
+      # Debug: List target directory
       - name: List target directory
         run: ls -R target
 
@@ -44,7 +44,7 @@ jobs:
             exit 1
           fi
 
-      # Upload Extent Report as an artifact
+      # Upload the zip as an artifact
       - name: Upload Extent Report
         if: steps.zip_report.outcome == 'success'
         uses: actions/upload-artifact@v4
@@ -52,7 +52,7 @@ jobs:
           name: extent-report
           path: extent-report.zip
 
-      # Send Extent Report via Gmail
+      # Send the zipped report via Gmail
       - name: Send Extent Report via Gmail
         if: steps.zip_report.outcome == 'success'
         uses: dawidd6/action-send-mail@v3
