@@ -30,6 +30,10 @@ jobs:
       - name: List target directory
         run: ls -R target
 
+      # Ensure target/chaintest folder exists
+      - name: Ensure report folder exists
+        run: mkdir -p target/chaintest
+
       # Zip the report folder if it exists
       - name: Zip Extent Report
         id: zip_report
