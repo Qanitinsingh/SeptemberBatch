@@ -1,0 +1,16 @@
+2025-09-09 09:44:12 [main] INFO  org.testng.internal.Utils - [TestNG] Running:
+  /Users/nitinkumar/Library/Caches/JetBrains/IdeaIC2025.2/temp-testng-customsuite.xml
+
+2025-09-09 09:44:19 [main] INFO  steps.Hooks - ChromeDriver initialized, window maximized, and cookies cleared.
+2025-09-09 09:44:21 [main] INFO  page.methods.FormMethods - Navigated to URL: https://testing.qaautomationlabs.com/form.php
+2025-09-09 09:44:21 [main] INFO  page.methods.FormMethods - Entered First Name: John
+2025-09-09 09:44:21 [main] INFO  page.methods.FormMethods - Entered Middle Name: Middle
+2025-09-09 09:44:21 [main] INFO  page.methods.FormMethods - Entered Last Name: Doe
+2025-09-09 09:44:21 [main] INFO  page.methods.FormMethods - Entered Email: john.doe@example.com
+2025-09-09 09:44:21 [main] INFO  page.methods.FormMethods - Entered Password: Test@1234
+2025-09-09 09:44:21 [main] INFO  page.methods.FormMethods - Entered Address: 123 Main St
+2025-09-09 09:44:21 [main] INFO  page.methods.FormMethods - Entered City: Los Angeles
+2025-09-09 09:44:21 [main] INFO  page.methods.FormMethods - Entered State: California
+2025-09-09 09:44:21 [main] INFO  page.methods.FormMethods - Entered Pin Code: 90001
+2025-09-09 09:44:21 [main] ERROR steps.Hooks - Scenario 'Fill user form and submit' failed. Screenshot saved at: /Users/nitinkumar/IdeaProjects/BeesolverDemo/ScreenShots/Fill_user_form_and_submit_20250909_094421.png
+2025-09-09 09:44:21 [main] INFO  steps.Hooks - ChromeDriver quit successfully.

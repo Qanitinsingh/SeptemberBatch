@@ -10,6 +10,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Hooks {
 
     public static WebDriver driver;
@@ -30,15 +36,31 @@ public class Hooks {
     @After
     public void tearDown(Scenario scenario) {
         try {
-            String screenshotName = scenario.getName().replaceAll(" ", "_");
             if (scenario.isFailed()) {
-                TakesScreenshot ts = (TakesScreenshot) driver;
-                byte[] screenshot = ts.getScreenshotAs(OutputType.BYTES);
-                scenario.attach(screenshot, "image/png", screenshotName);
-                logger.error("Scenario '{}' failed. Screenshot captured.", scenario.getName());
+                String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                String screenshotName = scenario.getName().replaceAll(" ", "_") + "_" + timestamp + ".png";
+
+                // Create folder if it doesn't exist
+                File screenshotDir = new File(System.getProperty("user.dir") + File.separator + "ScreenShots");
+                if (!screenshotDir.exists()) {
+                    screenshotDir.mkdirs();
+                }
+
+                // Capture screenshot as file
+                File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+                File destFile = new File(screenshotDir, screenshotName);
+                Files.copy(srcFile.toPath(), destFile.toPath());
+
+                // Attach screenshot to report also
+                byte[] screenshotBytes = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+                scenario.attach(screenshotBytes, "image/png", screenshotName);
+
+                logger.error("Scenario '{}' failed. Screenshot saved at: {}", scenario.getName(), destFile.getAbsolutePath());
             } else {
                 logger.info("Scenario '{}' passed.", scenario.getName());
             }
+        } catch (IOException e) {
+            logger.error("Exception while saving screenshot: {}", e.getMessage(), e);
         } catch (Exception e) {
             logger.error("Exception during screenshot capture or scenario teardown: {}", e.getMessage(), e);
         } finally {
