@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class FormMethods {
     private static final Logger logger = LoggerFactory.getLogger(FormMethods.class);
-
+// locators
     private static final By FIRST_NAME_LOCATOR = By.id("firstname");
     private static final By MIDDLE_NAME_LOCATOR = By.id("middlename");
     private static final By LAST_NAME_LOCATOR = By.id("lastname");
