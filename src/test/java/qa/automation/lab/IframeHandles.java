@@ -32,7 +32,7 @@ public class IframeHandles extends BaseClass {
             buttons.get(0).click();
 
             String successMessage = driver.findElement(By.cssSelector(".card-header #message")).getText();
-            Assert.assertEquals(successMessage, "You have clicked on iframe 1 button");
+            Assert.assertEquals(successMessage, "You havee clicked on iframe 1 button");
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2000));
 
             driver.switchTo().defaultContent();
