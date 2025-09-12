@@ -7,7 +7,11 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 
 public class FormMethods {
+
+
     private static final Logger logger = LoggerFactory.getLogger(FormMethods.class);
+
+
 // locators
     private static final By FIRST_NAME_LOCATOR = By.id("firstname");
     private static final By MIDDLE_NAME_LOCATOR = By.id("middlename");
@@ -18,8 +22,10 @@ public class FormMethods {
     private static final By CITY_LOCATOR = By.id("city");
     private static final By STATE_LOCATOR = By.id("states");
     private static final By PIN_CODE_LOCATOR = By.id("pincode");
-    private static final By SUBMIT_BUTTON_LOCATOR = By.cssSelector("#userForm .btn");
+    private static final By SUBMIT_BUTTON_LOCATOR = By.cssSelector("#userForm .bfsdfdstn");
     // Navigate to URL
+
+
     public static void enterURL(String url , WebDriver driver) {
         try {
             driver.get(url);
@@ -67,12 +73,10 @@ public class FormMethods {
 
     // Submit the form
     public static void submitForm(WebDriver driver) {
-        try {
+
             driver.findElement(SUBMIT_BUTTON_LOCATOR).click();
             logger.info("Form submitted successfully!");
-        } catch (Exception e) {
-            logger.error("Exception while submitting form: {}", e.getMessage(), e);
-        }
+
     }
 
     // Verify submission

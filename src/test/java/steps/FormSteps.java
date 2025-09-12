@@ -14,6 +14,7 @@ public class FormSteps {
     private WebDriver driver;
 
     public FormSteps() {
+
         driver = Hooks.driver; // Initialize driver from Hooks class
     }
 
@@ -32,7 +33,7 @@ public class FormSteps {
 
     @And("I submit the form")
     public void submitForm() {
-        FormMethods.submitForm(driver);
+       FormMethods.submitForm(driver);
     }
 
     @Then("I should see the form submitted successfully")
