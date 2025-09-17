@@ -22,6 +22,7 @@ public class FormSteps {
     public void navigateToFormPage(String url) {
         FormMethods.enterURL(url, driver);
 
+
     }
 
     @When("I fill the form with following details")
