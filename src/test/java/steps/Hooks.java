@@ -21,25 +21,44 @@ import java.util.Date;
 public class Hooks {
 
     public static WebDriver driver;
-    public static String browserName = "chrome"; // default browser
+    public static String browserName; // can be set from system property or tag
     private static final Logger logger = LoggerFactory.getLogger(Hooks.class);
 
     @Before
-    public void setup() {
+    public void setup(Scenario scenario) {
         try {
+            // Step 1: Check system property
+            String browserFromProperty = System.getProperty("browser");
+
+            // Step 2: Check scenario tags
+            String browserFromTag = scenario.getSourceTagNames().stream()
+                    .filter(tag -> tag.matches("@(chrome|firefox|edge)"))
+                    .map(tag -> tag.replace("@", ""))
+                    .findFirst()
+                    .orElse(null);
+
+            // Step 3: Decide browser to launch
+            if (browserFromProperty != null && !browserFromProperty.isEmpty()) {
+                browserName = browserFromProperty;
+            } else if (browserFromTag != null) {
+                browserName = browserFromTag;
+            } else {
+                browserName = "chrome";
+            }
+
             logger.info("Launching browser: {}", browserName);
 
-            switch (browserName.toLowerCase()) {
-                case "edge":
-                    driver = new EdgeDriver();
-                    break;
-                case "firefox":
-                    driver = new FirefoxDriver();
-                    break;
-                case "chrome":
-                default:
-                    driver = new ChromeDriver();
-                    break;
+            // Step 4: Launch driver dynamically using if-else
+            if (browserName.equalsIgnoreCase("chrome")) {
+                driver = new ChromeDriver();
+            } else if (browserName.equalsIgnoreCase("firefox")) {
+                driver = new FirefoxDriver();
+            } else if (browserName.equalsIgnoreCase("edge")) {
+                driver = new EdgeDriver();
+            } else {
+                logger.warn("Browser '{}' not recognized. Launching Chrome as default.", browserName);
+                driver = new ChromeDriver();
+                browserName = "chrome";
             }
 
             driver.manage().window().maximize();
@@ -66,9 +85,6 @@ public class Hooks {
         }
     }
 
-    /**
-     * Capture screenshot on failure and attach to Cucumber report.
-     */
     private void captureScreenshot(Scenario scenario) throws IOException {
         String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String screenshotName = scenario.getName().replaceAll(" ", "_") + "_" + timestamp + ".png";
@@ -88,9 +104,6 @@ public class Hooks {
         logger.error("Scenario '{}' failed. Screenshot saved at: {}", scenario.getName(), destFile.getAbsolutePath());
     }
 
-    /**
-     * Ensures all browser and driver processes are killed cleanly.
-     */
     private void cleanUp() {
         try {
             if (driver != null) {
@@ -101,31 +114,24 @@ public class Hooks {
             // Kill leftover driver processes
             killDriverProcesses(browserName);
 
+            driver = null;
         } catch (Exception e) {
             logger.error("Error during browser cleanup: {}", e.getMessage(), e);
         }
     }
 
-    /**
-     * Kills the driver processes (OS-specific).
-     */
     private void killDriverProcesses(String browser) {
         String os = System.getProperty("os.name").toLowerCase();
         String processName = "";
 
-        switch (browser.toLowerCase()) {
-            case "chrome":
-                processName = "chromedriver";
-                break;
-            case "edge":
-                processName = "msedgedriver";
-                break;
-            case "firefox":
-                processName = "geckodriver";
-                break;
-            default:
-                processName = "chromedriver";
-                break;
+        if (browser.equalsIgnoreCase("chrome")) {
+            processName = "chromedriver";
+        } else if (browser.equalsIgnoreCase("firefox")) {
+            processName = "geckodriver";
+        } else if (browser.equalsIgnoreCase("edge")) {
+            processName = "msedgedriver";
+        } else {
+            processName = "chromedriver";
         }
 
         try {

@@ -4,6 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.time.Duration;
 import java.util.Map;
 
 public class FormMethods {
@@ -29,6 +31,7 @@ public class FormMethods {
     public static void enterURL(String url , WebDriver driver) {
         try {
             driver.get(url);
+
             logger.info("Navigated to URL: {}", url);
         } catch (Exception e) {
             logger.error("Exception while navigating to URL {}: {}", url, e.getMessage(), e);
