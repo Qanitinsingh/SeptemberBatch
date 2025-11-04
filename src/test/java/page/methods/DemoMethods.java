@@ -78,8 +78,6 @@ public class DemoMethods {
 
     public static void verifyDashboardPage(WebDriver driver) {
         try {
-            driver.findElement(By.className("orangehrm-login-button")).click();
-            Thread.sleep(2000);
             logger.info("Verifying dashboard page visibility.");
             boolean isDashboardVisible = !driver.findElement(By.cssSelector(".oxd-topbar-header-title h6")).isDisplayed();
             if (!isDashboardVisible) {

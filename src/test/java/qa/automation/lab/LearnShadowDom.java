@@ -28,4 +28,6 @@ public class LearnShadowDom extends BaseClass {
         // Step 5: Assertion
         Assert.assertEquals(shadowText, "Hello from Shadow DOM!");
     }
+
+
 }

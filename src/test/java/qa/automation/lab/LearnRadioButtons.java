@@ -21,28 +21,28 @@ public class LearnRadioButtons extends BaseClass {
         }
     }
 
-//    @Test(priority = 1)
-//    public void selectEachGenderAndShow() {
-//        try {
-//            // Test Male selection
-//            driver.findElement(By.xpath("//input[@type='radio' and @name='gender' and @value='Male']")).click();
-//            List<WebElement> buttons = driver.findElements(By.cssSelector(".btn"));
-//            buttons.get(0).click();
-//            List<WebElement> result = driver.findElements(By.className("text-danger"));
-//            String maleText = result.get(0).getText();
-//            System.out.println("Male Result: " + maleText);
-//            Assert.assertTrue(maleText.contains("Male"), "Result should contain 'Male'");
-//
-//            // Test Female selection
-//            driver.findElement(By.xpath("//input[@type='radio' and @name='gender' and @value='Female']")).click();
-//            buttons.get(0).click();
-//            String femaleText = result.get(0).getText();
-//            System.out.println("Female Result: " + femaleText);
-//            Assert.assertTrue(femaleText.contains("Female"), "Result should contain 'Female'");
-//        } catch (Exception e) {
-//            System.out.println("Exception in selectEachGenderAndShow: " + e.getMessage());
-//        }
-//    }
+    @Test(priority = 1)
+    public void selectEachGenderAndShow() {
+        try {
+            // Test Male selection
+            driver.findElement(By.cssSelector("input[type='radio'][name='gender'][value='Male']")).click();
+            List<WebElement> buttons = driver.findElements(By.cssSelector(".btn"));
+            buttons.get(0).click();
+            List<WebElement> result = driver.findElements(By.className("text-danger"));
+            String maleText = result.get(0).getText();
+            System.out.println("Male Result: " + maleText);
+            Assert.assertTrue(maleText.contains("Male"), "Result should contain 'Male'");
+
+            // Test Female selection
+            driver.findElement(By.xpath("//input[@type='radio' and @name='gender' and @value='Female']")).click();
+            buttons.get(0).click();
+            String femaleText = result.get(0).getText();
+            System.out.println("Female Result: " + femaleText);
+            Assert.assertTrue(femaleText.contains("Female"), "Result should contain 'Female'");
+        } catch (Exception e) {
+            System.out.println("Exception in selectEachGenderAndShow: " + e.getMessage());
+        }
+    }
 
     @Test(priority = 2)
     public void checkRadioEnabledStatus() {
@@ -63,22 +63,22 @@ public class LearnRadioButtons extends BaseClass {
             System.out.println("Exception in checkRadioEnabledStatus: " + e.getMessage());
         }
     }
-//
-//    @Test(priority = 3)
-//    public void selectGenderAndAgeAndShowValues() {
-//        try {
-//            WebElement femaleRadio = driver.findElement(By.xpath("//input[@name='gender' and @value='female']"));
-//            femaleRadio.click();
-//            WebElement ageRadio = driver.findElement(By.xpath("//input[@name='ageGroup' and @value='19 to 44']"));
-//            ageRadio.click();
-//            driver.findElement(By.xpath("//button[text()='Get values']")).click();
-//            Thread.sleep(1000);
-//            WebElement result = driver.findElement(By.id("message-two"));
-//            String text = result.getText();
-//            System.out.println("Selected values: " + text);
-//            Assert.assertTrue(text.contains("Female") && text.contains("19 to 44"), "Result should show selected gender and age group");
-//        } catch (Exception e) {
-//            System.out.println("Exception in selectGenderAndAgeAndShowValues: " + e.getMessage());
-//        }
-//    }
+
+    @Test(priority = 3)
+    public void selectGenderAndAgeAndShowValues() {
+        try {
+            WebElement femaleRadio = driver.findElement(By.xpath("//input[@name='gender1' and @value='Female']"));
+            femaleRadio.click();
+            WebElement ageRadio = driver.findElement(By.xpath("//input[@name='age1' and @value='18-35']"));
+            ageRadio.click();
+            driver.findElement(By.xpath("//button[text()='Show Selected Values']")).click();
+            Thread.sleep(1000);
+            WebElement result = driver.findElement(By.id("result3"));
+            String text = result.getText();
+            System.out.println("Selected values: " + text);
+            Assert.assertTrue(text.contains("Female") && text.contains("18-35"), "Result should show selected gender and age group");
+        } catch (Exception e) {
+            System.out.println("Exception in selectGenderAndAgeAndShowValues: " + e.getMessage());
+        }
+    }
 }
