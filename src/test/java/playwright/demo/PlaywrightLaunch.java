@@ -14,7 +14,7 @@ public class PlaywrightLaunch {
             page.navigate("https://alphabetaops.com/");
             page.setViewportSize(1920, 1080);
             // Click on the novice section
-            page.locator(".mb-2:first-child").click();
+         page.locator(".mb-2:first-child").click();
             // Click on the first text box menu item
             page.locator(".mb-2:first-child ul.list-group li.list-group-item:first-child").click();
 
@@ -24,6 +24,15 @@ public class PlaywrightLaunch {
             FrameLocator iframe = page.frameLocator("iframe.content-iframe");
             // Fill the full name field inside iframe
             iframe.locator("#plain-text").fill("Nitin");
+            iframe.locator("#prefilled-text").clear();
+            iframe.locator("#prefilled-text").fill("Automation");
+            iframe.locator("#required-field").fill("Testing");
+
+            iframe.locator("#resettable-text").clear();
+            iframe.locator("#resettable-text").fill("playwright");
+            iframe.locator("#limited-text").fill("limit 10");
+            iframe.locator(".submit-btn").click();
+            page.locator(".mb-2:last-child").click();
             // Close the browser
             browser.close();
         }
